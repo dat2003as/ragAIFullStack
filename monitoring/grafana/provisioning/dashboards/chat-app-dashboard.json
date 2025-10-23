@@ -1,0 +1,134 @@
+{
+  "id": null,
+  "uid": "ai-chat-monitoring",
+  "title": "AI Chat App Monitoring",
+  "tags": ["ai-chat", "monitoring"],
+  "timezone": "browser",
+  "schemaVersion": 38,
+  "version": 1,
+  "refresh": "5s",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Request Rate (req/s)",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(http_requests_total[1m])",
+          "legendFormat": "{{method}} {{endpoint}}"
+        }
+      ],
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 }
+    },
+    {
+      "id": 2,
+      "title": "Gemini API Latency (p50, p95, p99)",
+      "type": "graph",
+      "targets": [
+        { "expr": "histogram_quantile(0.50, rate(gemini_api_duration_seconds_bucket[5m]))", "legendFormat": "p50" },
+        { "expr": "histogram_quantile(0.95, rate(gemini_api_duration_seconds_bucket[5m]))", "legendFormat": "p95" },
+        { "expr": "histogram_quantile(0.99, rate(gemini_api_duration_seconds_bucket[5m]))", "legendFormat": "p99" }
+      ],
+      "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 }
+    },
+    {
+      "id": 3,
+      "title": "Chat Success vs Error Rate",
+      "type": "graph",
+      "targets": [
+        { "expr": "rate(chat_requests_total{status=\"success\"}[1m])", "legendFormat": "Success" },
+        { "expr": "rate(chat_requests_total{status=\"error\"}[1m])", "legendFormat": "Error" }
+      ],
+      "gridPos": { "x": 0, "y": 8, "w": 12, "h": 8 }
+    },
+    {
+      "id": 4,
+      "title": "File Uploads by Type",
+      "type": "graph",
+      "targets": [
+        { "expr": "rate(file_uploads_total[1m])", "legendFormat": "{{file_type}}" }
+      ],
+      "gridPos": { "x": 12, "y": 8, "w": 12, "h": 8 }
+    },
+    {
+      "id": 5,
+      "title": "Active Sessions",
+      "type": "stat",
+      "targets": [ { "expr": "active_sessions" } ],
+      "gridPos": { "x": 0, "y": 16, "w": 6, "h": 4 }
+    },
+    {
+      "id": 6,
+      "title": "Total Requests",
+      "type": "stat",
+      "targets": [ { "expr": "sum(http_requests_total)" } ],
+      "gridPos": { "x": 6, "y": 16, "w": 6, "h": 4 }
+    },
+    {
+      "id": 7,
+      "title": "CSV Rows Processed",
+      "type": "stat",
+      "targets": [ { "expr": "csv_rows_processed_total" } ],
+      "gridPos": { "x": 12, "y": 16, "w": 6, "h": 4 }
+    },
+    {
+      "id": 8,
+      "title": "Image Processing Duration",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(image_processing_duration_seconds_sum[1m]) / rate(image_processing_duration_seconds_count[1m])",
+          "legendFormat": "avg duration"
+        }
+      ],
+      "gridPos": { "x": 18, "y": 16, "w": 6, "h": 4 }
+    },
+    {
+    "id": 9,
+    "title": "Document Uploads by Type",
+    "type": "graph",
+    "targets": [
+      { "expr": "rate(document_uploads_total[1m])", "legendFormat": "{{document_type}}" }
+    ],
+    "gridPos": { "x": 0, "y": 20, "w": 12, "h": 6 }
+  },
+  {
+  "id": 9,
+  "title": "Document Processing Duration (avg)",
+  "type": "graph",
+  "targets": [
+    {
+      "expr": "rate(document_processing_duration_seconds_sum[1m]) / rate(document_processing_duration_seconds_count[1m])",
+      "legendFormat": "{{document_type}}"
+    }
+  ],
+  "gridPos": { "x": 0, "y": 20, "w": 12, "h": 8 }
+},
+{
+  "id": 10,
+  "title": "Document Characters Processed",
+  "type": "stat",
+  "targets": [
+    {
+      "expr": "sum(document_chars_processed_total)"
+    }
+  ],
+  "gridPos": { "x": 12, "y": 20, "w": 6, "h": 4 }
+},
+{
+  "id": 11,
+  "title": "Document Processing Errors",
+  "type": "stat",
+  "targets": [
+    {
+      "expr": "sum(document_processing_errors_total)"
+    }
+  ],
+  "gridPos": { "x": 18, "y": 20, "w": 6, "h": 4 }
+} 
+  ]
+}

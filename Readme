@@ -1,0 +1,214 @@
+# AI Chat Application
+
+Ứng dụng chat AI full-stack với khả năng xử lý đa phương tiện: text, hình ảnh, CSV và tài liệu. Được xây dựng với React, FastAPI và Google Gemini AI.
+
+## 🚀 Tính năng chính
+
+- **Chat AI đa phương thức**: Sử dụng Google Gemini 2.5 Flash
+- **Phân tích hình ảnh**: Upload và phân tích ảnh với AI (max 5MB)
+- **Xử lý CSV**: Upload, parse và phân tích dữ liệu CSV (max 10MB, 100k rows)
+- **Hỗ trợ tài liệu**: Xử lý PDF, DOCX, DOC (max 10MB)
+- **Giám sát thời gian thực**: Tích hợp Prometheus + Grafana
+- **Rate Limiting**: Bảo vệ API khỏi abuse
+- **Giao diện responsive**: React với Tailwind CSS
+- **Session Management**: Lưu lịch sử 50 tin nhắn gần nhất
+
+## 📋 Yêu cầu hệ thống
+
+- Node.js 18+
+- Python 3.9+
+- Docker & Docker Compose
+- Google Gemini API Key
+
+## 🛠️ Tech Stack
+
+### Frontend (Port 6868)
+- React 18 + Vite
+- Tailwind CSS
+- Axios
+- Lucide React Icons
+
+### Backend (Port 8000)
+- FastAPI
+- Python 3.9+
+- Google Generative AI (Gemini 2.5 Flash)
+- Pydantic V2
+- Pillow, pandas, PyPDF2, python-docx
+
+### Monitoring
+- Prometheus (Port 9090)
+- Grafana (Port 3000)
+
+## 🚀 Cài đặt nhanh
+
+### 1. Clone repository
+```bash
+git clone <repository-url>
+cd ai-chat-rag
+```
+
+### 2. Cấu hình Environment Variables
+;
+### 3. Khởi động Backend
+```bash
+cd backend
+python -m venv venv
+
+# Windows:
+venv\Scripts\activate
+# Unix/Mac:
+source venv/bin/activate
+
+pip install -r requirements.txt
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+### 4. Khởi động Frontend
+```bash
+cd frontend
+npm install
+npm run dev -- --port 6868
+```
+
+### 5. Khởi động Monitoring (Tùy chọn)
+```bash
+docker-compose -f monitoring/docker-compose.monitoring.yml up -d
+```
+### 6. Makefile chạy file này để cài đặt tất cẩ nhanh hơn
+```bash
+# 1️⃣ Tạo môi trường Python
+conda create -n rag-full-stack python=3.11 -y
+conda activate rag-full-stack
+
+# 2️⃣ Cài dependencies cho cả backend và frontend
+make install
+
+# 3️⃣ Build Docker images
+make build
+
+# 4️⃣ Chạy toàn bộ app
+make up
+
+```
+
+
+## 🌐 Truy cập ứng dụng
+
+| Service | URL | Credentials |
+|---------|-----|-------------|
+| **Frontend** | http://localhost:6868 | - |
+| **Backend API** | http://localhost:8000 | - |
+| **API Docs** | http://localhost:8000/docs | - |
+| **Metrics** | http://localhost:8001/metrics | - |
+| **Prometheus** | http://localhost:9090 | - |
+| **Grafana** | http://localhost:3000 | admin/admin |
+
+## 📁 Cấu trúc dự án
+```
+ai-chat-rag/
+├── frontend/                    # React Application (Port 6868)
+│   ├── src/
+│   │   ├── components/         # React components
+│   │   │   ├── Chat/          # Chat UI components
+│   │   │   ├── Sidebar/       # Sidebar & Upload components
+│   │   │   ├── UI/            # Reusable UI components
+│   │   │   └── Layout/        # Layout components
+│   │   ├── services/          # API services
+│   │   ├── hooks/             # Custom React hooks
+│   │   └── utils/             # Utility functions
+│   ├── .env                   # Frontend environment variables
+│   ├── package.json
+│   ├── vite.config.js
+│   └── tailwind.config.js
+│
+├── backend/                    # FastAPI Application (Port 8000)
+│   ├── api/                   # API routes
+│   │   ├── router.py         # Main router
+│   │   └── v1/
+│   │       └── endpoints/    # API endpoints
+│   │           ├── chat.py
+│   │           ├── health.py
+│   │           ├── upload_csv.py
+│   │           ├── upload_image.py
+│   │           └── upload_document.py
+│   ├── core/
+│   │   └── config/           # Configuration management
+│   ├── services/             # Business logic
+│   │   ├── gemini_service.py
+│   │   ├── image_service.py
+│   │   ├── csv_service.py
+│   │   └── document_service.py
+│   ├── models/               # Pydantic models
+│   ├── middleware/           # Middlewares
+│   │   ├── cors.py
+│   │   ├── error_handler.py
+│   │   ├── logging_middleware.py
+│   │   └── rate_limiter.py
+│   ├── monitoring/           # Prometheus metrics
+│   ├── uploads/              # Temporary file storage
+│   ├── .env                  # Backend environment variables
+│   ├── main.py               # FastAPI entry point
+│   └── requirements.txt
+│
+├── monitoring/                # Monitoring stack (Ports 9090, 3000)
+│   ├── prometheus/
+│   │   ├── prometheus.yml
+│   │   └── alerts.yml
+│   ├── grafana/
+│   │   └── provisioning/
+│   └── docker-compose.monitoring.yml
+│
+├── .env                       # Root environment variables
+├── docker-compose.yml         # Full stack deployment
+└── README.md
+```
+
+## 📖 Documentation
+
+- [Frontend Documentation](./frontend/README.md)
+- [Backend Documentation](./backend/README.md)
+- [Monitoring Documentation](./monitoring/README.md)
+
+## 🔧 Giới hạn File Upload
+
+| Loại File | Kích thước tối đa | Định dạng hỗ trợ |
+|-----------|-------------------|------------------|
+| **Hình ảnh** | 5 MB | JPEG, PNG, GIF, WebP |
+| **CSV** | 10 MB | CSV (max 100k rows) |
+| **Documents** | 10 MB | PDF, DOC, DOCX |
+
+### Giới hạn xử lý
+
+- **Hình ảnh**: Max dimension 4096px, quality 85%
+- **CSV**: Chunk processing 10k rows/batch
+- **Session**: 50 tin nhắn lịch sử, timeout 30 phút
+- **Gemini API**: Timeout 30 giây, max 2048 tokens
+
+**Error: Invalid API Key**
+- Kiểm tra `GEMINI_API_KEY` trong `backend/.env`
+- Verify key tại https://makersuite.google.com/app/apikey
+
+**Error: Quota exceeded**
+- Check quota tại Google Cloud Console
+- Upgrade plan hoặc enable billing
+
+
+## 📝 API Response Codes
+
+| Code | Meaning | Description |
+|------|---------|-------------|
+| 200 | OK | Request successful |
+| 201 | Created | Resource created |
+| 400 | Bad Request | Invalid input |
+| 401 | Unauthorized | Authentication required |
+| 403 | Forbidden | Access denied |
+| 404 | Not Found | Resource not found |
+| 413 | Payload Too Large | File too large |
+| 415 | Unsupported Media Type | Invalid file type |
+| 422 | Unprocessable Entity | Validation error |
+| 429 | Too Many Requests | Rate limit exceeded |
+| 500 | Internal Server Error | Server error |
+| 503 | Service Unavailable | Service down |
+
+
+

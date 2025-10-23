@@ -1,0 +1,74 @@
+ai-chat-app/
+├── frontend/
+│   ├── app.py                          # Streamlit UI
+│   ├── requirements.txt
+│   └── .streamlit/
+│       └── config.toml
+│
+├── backend/
+│   ├── main.py                         # FastAPI entry point
+│   ├── config.py                       # Environment variables
+│   │
+│   ├── routes/
+│   │   ├── __init__.py
+│   │   ├── chat.py                     # POST /chat (handle all chat types)
+│   │   ├── upload.py                   # POST /upload-image, POST /upload-csv
+│   │   └── health.py                   # GET /health, GET /metrics
+│   │
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── gemini_service.py           # Gemini API wrapper
+│   │   ├── image_service.py            # Image processing
+│   │   └── csv_service.py              # CSV parsing & analysis
+│   │
+│   ├── models/
+│   │   ├── __init__.py
+│   │   └── schemas.py                  # Pydantic models
+│   │
+│   ├── middleware/
+│   │   ├── __init__.py
+│   │   └── cors.py                     # CORS setup
+│   │
+│   ├── monitoring/
+│   │   ├── __init__.py
+│   │   ├── metrics.py                  # Prometheus metrics
+│   │   └── tracing.py                  # OpenTelemetry setup
+│   │
+│   ├── uploads/                        # Temporary file storage
+│   │   ├── images/
+│   │   └── csv/
+│   │
+│   ├── requirements.txt
+│   └── Dockerfile
+│
+├── monitoring/
+│   ├── prometheus/
+│   │   ├── prometheus.yml              # Prometheus config
+│   │   └── alerts.yml                  # Alert rules
+│   │
+│   ├── grafana/
+│   │   ├── provisioning/
+│   │   │   ├── dashboards/
+│   │   │   │   ├── dashboard.yml
+│   │   │   │   └── chat-app-dashboard.json
+│   │   │   └── datasources/
+│   │   │       └── prometheus.yml
+│   │   └── README.md
+│   │
+│   └── docker-compose.monitoring.yml
+│
+├── docker-compose.yml                   # Main app + monitoring
+├── .env.example
+├── .gitignore
+├── README.md
+└── demo/
+    └── demo-video.mp4
+
+Setup project structure + .env
+Implement chat cơ bản trước (chỉ text)
+Thêm image upload + vision
+Thêm CSV analysis
+Polish UI + error handling
+Record demo + viết README
+
+Grafana dashboard JSON (pre-built dashboard)?

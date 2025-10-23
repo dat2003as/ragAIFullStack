@@ -1,0 +1,56 @@
+# Backend - AI Chat Application
+
+Backend API được xây dựng với FastAPI, tích hợp Google Gemini AI và hỗ trợ xử lý đa phương tiện.
+
+## 🚀 Tính năng
+
+- RESTful API với FastAPI
+- Google Gemini AI integration
+- Xử lý và phân tích hình ảnh
+- Parse và analyze CSV files
+- Xử lý documents (PDF, DOCX, TXT)
+- Rate limiting và security
+- Prometheus metrics export
+- Structured logging
+- CORS configuration
+- Error handling middleware
+- File upload validation
+- API documentation tự động
+
+## 📋 Yêu cầu
+
+- Python 3.11 hoặc cao hơn
+- pip hoặc poetry
+- Google Gemini API Key
+
+## 🛠️ Tech Stack
+
+- **FastAPI**: Modern web framework
+- **Google Generative AI**: Gemini API
+- **Pydantic**: Data validation
+- **Python-multipart**: File uploads
+- **Pillow**: Image processing
+- **pandas**: CSV analysis
+- **PyPDF2**: PDF processing
+- **python-docx**: Word documents
+- **prometheus-client**: Metrics
+- **slowapi**: Rate limiting
+
+## 📦 Cài đặt
+```bash
+cd backend
+
+conda create -n rag-full-stack python=3.11 --y
+conda activate rag-full-stack
+# Tạo virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# Windows:
+venv\Scripts\activate
+# Unix/Mac:
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+```

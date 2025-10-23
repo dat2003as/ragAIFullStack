@@ -1,0 +1,40 @@
+# monitoring/prometheus/prometheus.yml
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'ai-chat-cluster'
+    environment: 'production'
+
+# Alertmanager configuration (optional)
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+          # - alertmanager:9093
+
+# Load rules once and periodically evaluate them
+rule_files:
+  - "alerts.yml"
+
+# Scrape configurations
+scrape_configs:
+  # Scrape Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Scrape FastAPI backend metrics
+  - job_name: 'ai-chat-backend'
+    scrape_interval: 10s
+    static_configs:
+      - targets: ['backend:8001']
+        labels:
+          service: 'backend'
+          app: 'ai-chat'
+    
+    # Metric relabeling (optional)
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: 'process_.*'
+        action: drop  # Drop process metrics to reduce noise
