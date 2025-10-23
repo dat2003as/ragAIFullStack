@@ -79,6 +79,7 @@ document_chars_processed = Counter(
     "Total characters processed from documents"
 )
 
+
 # HTTP request metrics
 http_requests_total = Counter(
     "http_requests_total",

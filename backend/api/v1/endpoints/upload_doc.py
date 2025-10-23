@@ -102,12 +102,12 @@ async def upload_document(
 
         except ValueError as e:
             logger.error(f"❌ Validation error: {e}")
-            document_processing_errors.inc(1, {"file_type": "document", "error_type": "validation"})
+            document_processing_errors.labels(file_type="document", error_type="validation").inc()
             raise HTTPException(400, f"Document validation failed: {str(e)}")
 
         except Exception as e:
             logger.error(f"❌ Processing error: {e}")
-            document_processing_errors.inc(1, {"file_type": "document", "error_type": "processing"})
+            document_processing_errors.labels(file_type="document", error_type="processing").inc()
             raise HTTPException(500, f"Failed to process document: {str(e)}")
 
 
